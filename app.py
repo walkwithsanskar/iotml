@@ -1,48 +1,3 @@
-# from flask import Flask, request, jsonify
-# import joblib
-# import numpy as np
-
-# app = Flask(__name__)
-
-# # Load the trained model
-# loaded_model = joblib.load('naive_bayes_model2.pkl')
-
-# # Define label mapping
-# label_mapping = {
-#     1: 'fog',
-#     4: 'sun',
-#     0: 'drizzle',
-#     3: 'snow',
-#     2: 'rain'
-# }
-
-# @app.route('/predict', methods=['POST'])
-# def predict():
-#     # Get data from request
-#     data = request.get_json()
-
-#     # Extract parameters for prediction
-#     try:
-#         precipitation = float(data['precipitation'])
-#         temp_max = float(data['temp_max'])
-#         temp_min = float(data['temp_min'])
-#         wind = float(data['wind'])
-#     except KeyError:
-#         return jsonify({'error': 'Invalid input. Make sure to provide all 4 parameters.'}), 400
-#     except ValueError:
-#         return jsonify({'error': 'Invalid input. Parameters must be numeric.'}), 400
-
-#     # Make prediction
-#     prediction = loaded_model.predict([[precipitation, temp_max, temp_min, wind]])
-
-#     # Map prediction back to original label
-#     predicted_weather = label_mapping[prediction[0]]
-
-#     # Return prediction
-#     return jsonify({'prediction': predicted_weather})
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
 
 
 
@@ -110,6 +65,6 @@ def predict():
     # Return prediction
     return jsonify({'prediction': predicted_weather})
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+# if __name__ == '__main__':
+#     app.run(host='0.0.0.0', debug=True)
 
