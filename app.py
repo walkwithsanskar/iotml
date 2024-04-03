@@ -60,3 +60,25 @@ def predict():
 
     # Return prediction
     return jsonify({'prediction': predicted_weather})
+
+
+
+@app.route('/cityweather/<cityname>', methods=['GET'])
+def predict_city_weather(cityname):
+    # Fetch weather data
+    weather_data = fetch_weather_data(cityname)
+
+    if weather_data is None:
+        return jsonify({'error': 'Failed to fetch weather data. Check your city name and API key.'}), 400
+
+    # Unpack weather data
+    precipitation, temp_max, temp_min, wind = weather_data
+
+    # Make prediction
+    prediction = loaded_model.predict([[precipitation, temp_max, temp_min, wind]])
+
+    # Map prediction back to original label
+    predicted_weather = label_mapping[prediction[0]]
+
+    # Return prediction
+    return jsonify({'city': cityname, 'prediction': predicted_weather})
