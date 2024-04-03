@@ -1,7 +1,3 @@
-
-
-
-
 from flask import Flask, request, jsonify
 import joblib
 import requests
@@ -20,9 +16,12 @@ label_mapping = {
     2: 'rain'
 }
 
+# Constant API key
+API_KEY = "cb5150ce2489ac77d9a01d2ba5c33c2d"
+
 # Function to fetch weather data from OpenWeather API
-def fetch_weather_data(api_key, city):
-    url = f'http://api.openweathermap.org/data/2.5/weather?q=delhi&appid={api_key}&units=metric'
+def fetch_weather_data(city):
+    url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric'
     response = requests.get(url)
     print(response)
     if response.status_code == 200:
@@ -38,18 +37,15 @@ def fetch_weather_data(api_key, city):
 @app.route('/predict', methods=['POST'])
 def predict():
     # Get data from request
-    
+    data = request.get_json()
+    city = data.get('city')
 
-    # Extract city and OpenWeather API key from request data
-    city = "delhi"
-    api_key = "cb5150ce2489ac77d9a01d2ba5c33c2d"
-    print(api_key)
-    if not city or not api_key:
-        return jsonify({'error': 'City and API key must be provided.'}), 400
+    if not city:
+        return jsonify({'error': 'City must be provided.'}), 400
 
     # Fetch weather data
-    weather_data = fetch_weather_data(api_key, city)
-    print(weather_data)
+    weather_data = fetch_weather_data(city)
+
     if weather_data is None:
         return jsonify({'error': 'Failed to fetch weather data. Check your city name and API key.'}), 400
 
@@ -64,7 +60,3 @@ def predict():
 
     # Return prediction
     return jsonify({'prediction': predicted_weather})
-
-# if __name__ == '__main__':
-#     app.run(host='0.0.0.0', debug=True)
-
